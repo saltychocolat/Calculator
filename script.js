@@ -1,10 +1,12 @@
 let x =null;
 let  y =null;
 let op;
-const nums =[0,1,2,3,4,5,6,7,8,9]
+const nums =["0","1","2","3","4","5","6","7","8","9","."]
 const operators =["+","-","x","/","="]
 
 const buttons = document.querySelector(".buttons")
+const topDisplay = document.querySelector("#top")
+const botDisplay = document.querySelector("#bot")
 
 function add(x,y){
     return x+y;
@@ -25,15 +27,26 @@ function divide(x,y){
 }
 
 function operate(x,y,op){
+    x= Number(x);
+    y=Number(y);
     switch(op){
         case "+":
             return add(x,y);
         case "-":
             return substract(x,y);
-        case "*":
+        case "x":
             return multiply(x,y);
         case "/":
             return divide(x,y);
+    }
+}
+function updateDisplay(x,pos){
+    if(pos=="bot"){
+        botDisplay.textContent=x;
+    }
+    else{
+        topDisplay.textContent=x;
+        botDisplay.textContent=""
     }
 }
 
@@ -41,29 +54,56 @@ buttons.addEventListener("click",function(event){
     target = event.target
     if(target.className =="box"){
         value =  target.textContent
-        if(nums.includes(Number(value))){
-            value = Number(value)
-            console.log(value)
-            if(x==null)
-                x=value;
-            else
+        if(nums.includes(value)){
+            if(value=="."){
+                if(x!=null && op==null){
+                    x+="."
+                    botDisplay.textContent=x;
+                }
+                else if(y!=null){
+                    y+="."
+                    botDisplay.textContent=y;
+                }
+            }
+            else if(x==null){
+                x=value
+                botDisplay.textContent=x;
+            }
+            else if(x!=null && op==null){
+                x+=value
+                botDisplay.textContent=x;
+            }
+            else if(y==null){
                 y=value
+                botDisplay.textContent=y;
+            }
+            else{
+                y+=value
+                botDisplay.textContent=y;
+            }
         }
         if(operators.includes(value)){
-            console.log(value)
             if(value=="="){
                 if(x!=null && y!=null && op!=null){
-                    x = operate(x,y,op)
-                    y,op=null
-                    console.log(x)
+                    x = String(operate(x,y,op));
+                    botDisplay.textContent=x;
+                    topDisplay.textContent=""
+                    y=null;
+                    op=null;
                 }
 
             }
             else{
                 if(x!=null && y!=null && op!=null){
-                    x = operate(x,y,op)
-                    console.log(x)
-                    y,op=null
+                    x = String(operate(x,y,op));
+                    botDisplay.textContent=x;
+                    topDisplay.textContent=""
+                    y=null;
+                    op=null;
+                }
+                else{
+                    topDisplay.textContent=x;
+                    botDisplay.textContent="";  
                 }
                 op=value
             }
