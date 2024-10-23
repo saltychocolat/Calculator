@@ -2,7 +2,7 @@ let x =null;
 let  y =null;
 let op;
 const nums =["0","1","2","3","4","5","6","7","8","9","."]
-const operators =["+","-","x","/","="]
+const operators =["+","-","x","/","=","%","+/-","AC"]
 
 const buttons = document.querySelector(".buttons")
 const topDisplay = document.querySelector("#top")
@@ -23,9 +23,11 @@ function multiply(x,y){
     return x*y;
 }
 function divide(x,y){
-    return x/y;
+    return (x/y);
 }
-
+function rest(x,y){
+    return x%y;
+}
 function operate(x,y,op){
     x= Number(x);
     y=Number(y);
@@ -38,21 +40,13 @@ function operate(x,y,op){
             return multiply(x,y);
         case "/":
             return divide(x,y);
+        case "%":
+            return rest(x,y);
     }
 }
-function updateDisplay(x,pos){
-    if(pos=="bot"){
-        botDisplay.textContent=x;
-    }
-    else{
-        topDisplay.textContent=x;
-        botDisplay.textContent=""
-    }
-}
-
 buttons.addEventListener("click",function(event){
     target = event.target
-    if(target.className =="box"){
+    if(target.className.includes("box")){
         value =  target.textContent
         if(nums.includes(value)){
             if(value=="."){
@@ -83,7 +77,14 @@ buttons.addEventListener("click",function(event){
             }
         }
         if(operators.includes(value)){
-            if(value=="="){
+            if(value=="AC"){
+                botDisplay.textContent="0";
+                topDisplay.textContent=""
+                x=null;
+                y=null;
+                op=null;
+            }
+            else if(value=="="){
                 if(x!=null && y!=null && op!=null){
                     x = String(operate(x,y,op));
                     botDisplay.textContent=x;
@@ -97,7 +98,7 @@ buttons.addEventListener("click",function(event){
                 if(x!=null && y!=null && op!=null){
                     x = String(operate(x,y,op));
                     botDisplay.textContent=x;
-                    topDisplay.textContent=""
+                    topDisplay.textContent="";
                     y=null;
                     op=null;
                 }
