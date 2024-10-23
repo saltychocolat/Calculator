@@ -2,7 +2,7 @@ html,
 body{
     width: 100%;
     height: 100%;
-    background-color:#1E3A5F;
+    background-color:#808080;
 }
 
 body{
@@ -28,7 +28,6 @@ body{
     width: 500px;
     height: 550px;
     display: flex;
-    
     flex-direction: column;
     gap:10px;
 }
@@ -39,6 +38,7 @@ body{
     gap:10px;
 }
 .box{
+    color: white;
     font-family:sans-serif;
     display: flex;
     justify-content: center;
@@ -47,9 +47,8 @@ body{
     font-weight: bolder;
     flex:1;
     border-radius: 10px;
-    background-color: #F5F5F5;
+    background-color: #101010;
     width: 100px;
-    border: solid;
 }
 #display{
     box-sizing: border-box;
@@ -75,11 +74,9 @@ body{
     align-items: end;
     box-sizing: border-box;
 }
-#zero{
-    flex:2.12;
-}
-.orange{
-    background-color: orange;
+
+.colored{
+    color:darkblue; 
 }
 .clear{
     background-color: red;
