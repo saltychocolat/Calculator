@@ -1,3 +1,5 @@
+var clickSound = new Audio("click.mp3")
+
 let x =null;
 let  y =null;
 let op;
@@ -7,6 +9,7 @@ const operators =["+","-","x","/","=","%","+/-","AC"]
 const buttons = document.querySelector(".buttons")
 const topDisplay = document.querySelector("#top")
 const botDisplay = document.querySelector("#bot")
+const midDisplay = document.querySelector("#mid")
 
 function add(x,y){
     return x+y;
@@ -47,16 +50,21 @@ function operate(x,y,op){
 buttons.addEventListener("click",function(event){
     target = event.target
     if(target.className.includes("box")){
+        clickSound.play()
         value =  target.textContent
         if(nums.includes(value)){
             if(value=="."){
                 if(x!=null && op==null){
-                    x+="."
-                    botDisplay.textContent=x;
+                    if(!(botDisplay.textContent.includes("."))){
+                        x+="."
+                        botDisplay.textContent=x;
+                    }
                 }
                 else if(y!=null){
+                    if(!(botDisplay.textContent.includes("."))){
                     y+="."
                     botDisplay.textContent=y;
+                    }
                 }
             }
             else if(x==null){
@@ -78,17 +86,28 @@ buttons.addEventListener("click",function(event){
         }
         if(operators.includes(value)){
             if(value=="AC"){
-                botDisplay.textContent="0";
+                botDisplay.textContent="";
                 topDisplay.textContent=""
                 x=null;
                 y=null;
                 op=null;
             }
+            else if(value=="+/-"){
+                if(x!=null && y==null){
+                    x=-x;
+                    botDisplay.textContent=x;
+                }
+                else{
+                    y=-y;
+                    botDisplay.textContent=y;
+                }
+            }
             else if(value=="="){
                 if(x!=null && y!=null && op!=null){
                     x = String(operate(x,y,op));
                     botDisplay.textContent=x;
-                    topDisplay.textContent=""
+                    topDisplay.textContent="";
+                    midDisplay.textContent="";
                     y=null;
                     op=null;
                 }
@@ -97,16 +116,20 @@ buttons.addEventListener("click",function(event){
             else{
                 if(x!=null && y!=null && op!=null){
                     x = String(operate(x,y,op));
-                    botDisplay.textContent=x;
-                    topDisplay.textContent="";
+                    botDisplay.textContent="";
+                    topDisplay.textContent=x;
+                    midDisplay.textContent=op;
                     y=null;
                     op=null;
                 }
-                else{
+                else if(x!=null){
                     topDisplay.textContent=x;
                     botDisplay.textContent="";  
                 }
-                op=value
+                op=value;
+                if(!(x==null && y==null))
+                    midDisplay.textContent=op;
+
             }
         }
     }
